@@ -2,7 +2,7 @@ from PIL import Image
 from numpy import array
 import imager332 as imager
 
-img = Image.open('colour test.jpg').convert('RGB')
+img = Image.open('Assets\Map 3.jpg').convert('RGB')
 img.show()
 
 w,h = img.size
