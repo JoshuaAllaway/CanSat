@@ -2,7 +2,7 @@ from PIL import Image
 from numpy import array
 import imager332 as imager
 
-img = Image.open('Assets\Map 3.jpg').convert('RGB')
+img = Image.open('Assets\Map 5.jpg').convert('RGB')
 img.show()
 
 w,h = img.size
@@ -69,7 +69,7 @@ def to_image(buf: bytearray, width: int, height: int) -> Image.Image:
 buffer = to_rgb565(img)
 print(len(buffer)/1000)
 
-factor = h//45
+factor = h//38
 
 buffer = imager.resize(buffer, w, h, factor)
 bits = imager.to_RGB332(buffer)
