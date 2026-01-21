@@ -10,29 +10,33 @@ uart = UART(0, baudrate=9600, tx=Pin(0), rx=Pin(1))
 # uart.write(b'$PMTK220,1000*1F\r\n')
 # uart.write(b'$PMTK397*0F\r\n')
 
+buffer = ''
+
 while True:
     if uart.any():
-        line = uart.readline()
+        line = uart.read(30)
+        print(line)
         if not line:
+            print('invalid line')
             continue
         
         try:
-            text = line.decode('ascii', 'ignore').strip()
+             text = line.decode('ascii', 'ignore').strip()
         except:
-            print('ivalid data')
+            print('invalid data')
             continue
         
-        if not text.startswith('$'):
+        try:
+            gps.update(text)
+            print(text)
+            if gps.latitude[0] != 0:  # has a fix
+                print("Lat:", gps.latitude_string())
+                print("Lon:", gps.longitude_string())
+                print("Satellites:", gps.satellites_in_use)
+                print("Time:", gps.timestamp)
+                print("Date:", gps.date)
+                print("-----")
+            else:
+                print('not fixed')
+        except:
             continue
-        
-        gps.update(text)
-
-        if gps.latitude[0] != 0:  # has a fix
-            print("Lat:", gps.latitude_string())
-            print("Lon:", gps.longitude_string())
-            print("Satellites:", gps.satellites_in_use)
-            print("Time:", gps.timestamp)
-            print("Date:", gps.date)
-            print("-----")
-        else:
-            print('not fixed')
