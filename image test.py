@@ -5,7 +5,7 @@ import imager332 as imager
 img = Image.open('Assets\Map 5.jpg').convert('RGB')
 img.show()
 
-w,h = img.size
+w,h = 160,120
 
 def to_rgb565(img: Image.Image) -> bytearray:
     """
@@ -66,14 +66,17 @@ def to_image(buf: bytearray, width: int, height: int) -> Image.Image:
     img.putdata(rgb)
     return img
 
-buffer = to_rgb565(img)
+with open('image10.raw','rb') as file:
+    data = file.read()
+    buffer = bytearray(data)
 print(len(buffer)/1000)
-
+img = to_image(buffer, w, h)
+img.show()
 factor = h//38
 
-buffer = imager.resize(buffer, w, h, factor)
-bits = imager.to_RGB332(buffer)
-print(f'{len(bits)/1000}')
-bits = imager.to_RGB565(bits)
-img = to_image(bits, w//factor, h//factor)
-img.show()
+# buffer = imager.resize(buffer, w, h, factor)
+# bits = imager.to_RGB332(buffer)
+# print(f'{len(bits)/1000}')
+# bits = imager.to_RGB565(bits)
+# img = to_image(bits, w//factor, h//factor)
+# img.show()
