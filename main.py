@@ -18,6 +18,13 @@ gps_init(uart)
 t_last = time_ns()
 while True:
     
+    t = time_ns()
+    if t - t_last >= 1E9:
+        t_last = t
+        weather = bmp_read(bmp280)
+        w_str = '\n'+str(weather['t']) + ', ' + str(weather['p']) + ', ' + str(weather['a']) 
+        w_file.write(w_str)
+    
     if uart.any():
         line = uart.read(5)
         if not line:
@@ -36,18 +43,13 @@ while True:
             gps.update(text[i])
         
         if gps.latitude[0] != 0:  # has a fix
-            print("Lat:", gps.latitude_string())
-            print("Lon:", gps.longitude_string())
-            print("Satellites:", gps.satellites_in_use)
-            print("Time:", gps.timestamp)
-            print("Date:", gps.date)
-            print("-----")
+            string = '\n Lat: '+gps.latitude_string()
+            string += ', Lon: '+gps.longitude_string()
+            string += ', Vel: '+gps.speed_string()
+            string += ', Dir: '+str(gps.compass_direction)
+            string += ', Dat: '+gps.date_string(formatting='s_dmy')
+            string += ', Time:'+str(gps.timestamp)
+            g_file.write(string)
         else:
-            print('not fixed')
+            g_file.write('\n not fixed')
         
-    t = time_ns()
-    if t - t_last >= 1E9:
-        t_last = t
-        weather = bmp_read(bmp280)
-        w_str = '\n'+str(weather['t']) + ', ' + str(weather['p']) + ', ' + str(weather['a']) 
-        w_file.write(w_str)

@@ -10,34 +10,6 @@ def gps_init(uart):
     uart.write(b'$PMTK314,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1*2C\r\n')
     uart.write(b'$PMTK220,1000*1F\r\n')
     uart.write(b'$PMTK397*0F\r\n')
-
-def gps_read(uart):
-    if uart.any():
-        line = uart.readline()
-        if not line:
-            return
-        
-        try:
-            text = line.decode('ascii', 'ignore').strip()
-        except:
-            print('ivalid data')
-            return
-        
-        if not text.startswith('$'):
-            return
-        
-        #continue 
-        gps.update(text)
-
-        if gps.latitude[0] != 0:  # has a fix
-            print("Lat:", gps.latitude_string())
-            print("Lon:", gps.longitude_string())
-            print("Satellites:", gps.satellites_in_use)
-            print("Time:", gps.timestamp)
-            print("Date:", gps.date)
-            print("-----")
-        else:
-            print('not fixed')
     
 if __name__ == '__main__':
     while True:
