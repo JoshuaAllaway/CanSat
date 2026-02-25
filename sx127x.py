@@ -79,7 +79,7 @@ __DEBUG__ = True
 class SX127x:
 
     default_parameters = {
-            'frequency': 868E6, 
+            'frequency': 433E6, 
             'tx_power_level': 2, 
             'signal_bandwidth': 125E3,    
             'spreading_factor': 8, 
@@ -114,6 +114,7 @@ class SX127x:
         re_try = 0
         while init_try and re_try < 5:
             version = self.read_register(REG_VERSION)
+            print(version)
             re_try = re_try + 1
             if version != 0:
                 init_try = False
