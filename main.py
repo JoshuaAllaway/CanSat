@@ -30,9 +30,15 @@ while True:
         w_str = '\n'+str(weather['t']) + ', ' + str(weather['p']) + ', ' + str(weather['a']) 
         w_file.write(w_str)
         g_file.write(string)
+        
+        send(lora, w_str)
+        send(lora, string)
+        payload = receive(lora)
+        if payload != '':
+            print('payload received')
     
     if uart.any():
-        line = uart.read(5)
+        line = uart.read(10)
         if not line:
             continue
         
@@ -51,12 +57,7 @@ while True:
         if gps.latitude[0] != 0:  # has a fix
             string = '\n Lat: '+gps.latitude_string()
             string += ', Lon: '+gps.longitude_string()
-            string += ', Vel: '+gps.speed_string()
-            string += ', Dir: '+str(gps.compass_direction)
-            string += ', Dat: '+gps.date_string(formatting='s_dmy')
-            string += ', Time:'+str(gps.timestamp)
         else:
             string = '\nNot Fixed'
-            
     
         

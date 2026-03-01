@@ -491,4 +491,5 @@ class SX127x:
     def collect_garbage(self):
         gc.collect()
         if __DEBUG__:
-            print('[Memory - free: {}   allocated: {}]'.format(gc.mem_free(), gc.mem_alloc()))
+            pass
+            #print('[Memory - free: {}   allocated: {}]'.format(gc.mem_free(), gc.mem_alloc()))
